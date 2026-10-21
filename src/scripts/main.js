@@ -227,14 +227,20 @@ document.addEventListener('DOMContentLoaded', () => {
           bgAudio.pause();
           bgAudio.currentTime = 0;
         })
-        .catch(() => {});
+        .catch(() => { });
     }
   }
 
-  // Pre-warm audio on mobile touchstart
+  // Pre-warm audio and handle open on click, touch or keyboard
   if (envelopeOverlay) {
     envelopeOverlay.addEventListener('touchstart', unlockAudio, { passive: true });
     envelopeOverlay.addEventListener('click', handleOpenEnvelope);
+    envelopeOverlay.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        handleOpenEnvelope();
+      }
+    });
   }
 
   function handleOpenEnvelope() {
@@ -254,7 +260,7 @@ document.addEventListener('DOMContentLoaded', () => {
       videoTransitionWrap.classList.add('video-visible');
       const videoPromise = envelopeVideo.play();
       if (videoPromise !== undefined) {
-        videoPromise.catch(() => {});
+        videoPromise.catch(() => { });
       }
     }
 
@@ -320,7 +326,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (bgAudio.paused) {
         bgAudio.play().then(() => {
           setPlayerState(true);
-        }).catch(() => {});
+        }).catch(() => { });
       } else {
         bgAudio.pause();
         setPlayerState(false);

@@ -42,6 +42,9 @@ html {
   font-size: 16px;
   scroll-behavior: smooth;
   background-color: var(--color-canvas);
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
 }
 
 body {
@@ -49,7 +52,10 @@ body {
   color: var(--color-text-dark);
   background-color: var(--color-canvas);
   min-height: 100vh;
+  min-height: 100dvh;
   overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -75,17 +81,21 @@ body {
 .envelope-container {
   position: relative;
   width: 100%;
-  max-width: 450px;
+  max-width: min(440px, 92vw);
+  max-height: 90vh;
+  max-height: 90dvh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 1.5rem;
+  padding: 1rem;
 }
 
 .envelope-img {
   width: 100%;
   max-width: 440px;
+  max-height: 76vh;
+  max-height: 76dvh;
   height: auto;
   display: block;
   object-fit: contain;
@@ -224,8 +234,31 @@ body {
 
 @media (max-width: 480px) {
   .vintage-player-wrap {
-    bottom: 18px;
-    right: 18px;
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+    right: calc(16px + env(safe-area-inset-right, 0px));
+  }
+
+  .vintage-record-btn {
+    width: 58px;
+    height: 58px;
+  }
+
+  .record-genre-tooltip {
+    right: 0;
+    top: auto;
+    bottom: calc(100% + 14px);
+    transform: translateY(8px);
+    min-width: 200px;
+    max-width: calc(100vw - 32px);
+  }
+
+  .vintage-player-wrap:hover .record-genre-tooltip,
+  .vintage-player-wrap.menu-open .record-genre-tooltip {
+    transform: translateY(0);
+  }
+
+  .song-toast-notification {
+    max-width: calc(100vw - 32px);
   }
 }
 
@@ -849,11 +882,15 @@ body {
    ========================================================================== */
 .page-wrapper {
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   justify-content: center;
   background-color: var(--color-canvas);
   padding: 0;
   padding-bottom: 0;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: clip;
 }
 
 .invitation-container {
@@ -865,6 +902,7 @@ body {
   flex-direction: column;
   background: transparent;
   box-shadow: none;
+  overflow-x: clip;
 }
 
 .section {
@@ -886,7 +924,8 @@ body {
 .hero-arch-wrapper {
   position: relative;
   width: 100%;
-  height: 762px;
+  height: clamp(580px, 92vh, 762px);
+  max-height: 762px;
   overflow: visible;
   display: flex;
   flex-direction: column;
@@ -896,7 +935,7 @@ body {
 .hero-video-container {
   position: relative;
   width: 100%;
-  height: 762px;
+  height: 100%;
   overflow: hidden;
 }
 
@@ -931,25 +970,26 @@ body {
   text-align: center;
   z-index: 10;
   pointer-events: none;
+  padding: 0 1rem;
 }
 
 .hero-script-tagline {
   font-family: 'Great Vibes', 'Alex Brush', cursive;
-  font-size: 2.85rem;
+  font-size: clamp(2.1rem, 7.2vw, 2.85rem);
   color: #a67d2b;
-  margin-top: 155px;
+  margin-top: clamp(95px, 17vh, 155px);
   line-height: 1;
   text-shadow: 0 1px 2px rgba(160, 120, 50, 0.35);
 }
 
 .hero-date {
   font-family: var(--font-serif-display);
-  font-size: 1.45rem;
+  font-size: clamp(1.15rem, 4vw, 1.45rem);
   letter-spacing: 0.18em;
   color: #a67d2b;
   font-weight: 500;
   margin-top: 0.25rem;
-  margin-bottom: 2.2rem;
+  margin-bottom: clamp(1rem, 3.2vh, 2.2rem);
   text-shadow: 0 1px 2px rgba(160, 120, 50, 0.3);
 }
 
@@ -957,21 +997,24 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
 }
 
 .hero-name {
   font-family: 'Great Vibes', 'Alex Brush', cursive;
-  font-size: 5.8rem;
-  line-height: 0.72;
+  font-size: clamp(3.2rem, 13vw, 5.8rem);
+  line-height: 0.76;
   color: #a67d2b;
   font-weight: 400;
   text-shadow: 0 1px 3px rgba(160, 120, 50, 0.45);
+  max-width: 100%;
+  overflow: visible;
 }
 
 .hero-amp {
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-style: italic;
-  font-size: 2.6rem;
+  font-size: clamp(1.8rem, 6vw, 2.6rem);
   color: #a07b33;
   margin: 0.15rem 0;
   line-height: 1;
@@ -979,7 +1022,7 @@ body {
 
 .hero-scroll-cue {
   position: absolute;
-  top: 512px;
+  top: clamp(390px, 67%, 512px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -988,7 +1031,7 @@ body {
 
 .scroll-script {
   font-family: 'Great Vibes', 'Alex Brush', cursive;
-  font-size: 2.15rem;
+  font-size: clamp(1.6rem, 5.5vw, 2.15rem);
   color: #a67d2b;
   line-height: 1;
   text-shadow: 0 1px 2px rgba(160, 120, 50, 0.35);
@@ -1020,7 +1063,7 @@ body {
 
 .hero-floral-decor {
   position: absolute;
-  bottom: -62px;
+  bottom: clamp(-52px, -8vw, -62px);
   left: 0;
   right: 0;
   height: 220px;
@@ -1035,17 +1078,17 @@ body {
 }
 
 .bouquet-left {
-  left: -24px;
+  left: clamp(-16px, -3.5vw, -24px);
   bottom: 0;
-  width: 240px;
+  width: clamp(140px, 42vw, 240px);
   height: auto;
   animation: floralSwayLeft 5s ease-in-out infinite alternate;
 }
 
 .bouquet-right {
-  right: -24px;
+  right: clamp(-16px, -3.5vw, -24px);
   bottom: 0;
-  width: 250px;
+  width: clamp(145px, 44vw, 250px);
   height: auto;
   animation: floralSwayRight 5s ease-in-out infinite alternate;
 }
@@ -1105,13 +1148,17 @@ body {
   filter: brightness(1.028) contrast(1.02) drop-shadow(0 20px 44px rgba(105, 75, 38, 0.16)) drop-shadow(0 4px 14px rgba(120, 85, 45, 0.08));
 }
 
-@media (max-width: 540px) {
+@media (max-width: 580px) {
   .blessing-section {
-    margin-top: -65px;
+    margin-top: -62px;
   }
 
   .torn-paper-card {
-    padding: 4.4rem 1.6rem 3.6rem;
+    width: calc(100% - 16px);
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: clamp(3.4rem, 10vw, 4.6rem) clamp(1rem, 3.8vw, 1.8rem) clamp(2.8rem, 8vw, 3.6rem);
   }
 }
 
@@ -1136,6 +1183,7 @@ body {
   align-items: center;
   gap: 2px;
   margin-bottom: 1.5rem;
+  width: 100%;
 }
 
 .blessing-script-line {
@@ -1150,41 +1198,32 @@ body {
 }
 
 .blessing-script-line.line-1 {
-  font-size: 3.25rem;
+  font-size: clamp(2.1rem, 7.5vw, 3.25rem);
 }
 
 .blessing-script-line.line-2 {
-  font-size: 2.9rem;
+  font-size: clamp(1.85rem, 6.8vw, 2.9rem);
 }
 
 .blessing-script-line.line-3 {
-  font-size: 2.75rem;
-  white-space: nowrap;
-}
-
-@media (max-width: 480px) {
-  .blessing-script-line.line-1 {
-    font-size: 2.75rem;
-  }
-
-  .blessing-script-line.line-2 {
-    font-size: 2.45rem;
-  }
-
-  .blessing-script-line.line-3 {
-    font-size: 2.3rem;
-  }
+  font-size: clamp(1.5rem, 5.2vw, 2.75rem);
+  white-space: normal;
+  text-wrap: balance;
+  word-break: keep-all;
+  max-width: 100%;
 }
 
 .blessing-invitation-text {
   text-align: center;
   margin-top: 0.35rem;
   margin-bottom: 0.4rem;
+  width: 100%;
+  padding: 0 0.5rem;
 }
 
 .blessing-salutation {
   font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 1.22rem;
+  font-size: clamp(1.05rem, 3.6vw, 1.22rem);
   font-weight: 500;
   color: #6e5544;
   margin-bottom: 0.42rem;
@@ -1194,21 +1233,11 @@ body {
 
 .blessing-body {
   font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 1.08rem;
+  font-size: clamp(0.92rem, 3.2vw, 1.08rem);
   font-weight: 400;
   color: #6e5544;
   line-height: 1.62;
   letter-spacing: 0.015em;
-}
-
-@media (max-width: 480px) {
-  .blessing-salutation {
-    font-size: 1.12rem;
-  }
-
-  .blessing-body {
-    font-size: 1rem;
-  }
 }
 
 /* ==========================================================================
@@ -1269,7 +1298,7 @@ body {
 
 .countdown-title {
   font-family: var(--font-script);
-  font-size: 3.2rem;
+  font-size: clamp(2.2rem, 7.5vw, 3.2rem);
   color: var(--color-gold-deep);
   margin-bottom: 1.5rem;
 }
@@ -1278,16 +1307,17 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: clamp(4px, 1.4vw, 0.5rem);
   margin-bottom: 1.2rem;
+  flex-wrap: nowrap;
 }
 
 .timer-box {
   background: rgba(255, 255, 255, 0.7);
   border: 1px solid var(--color-gold-light);
   border-radius: 6px;
-  padding: 0.75rem 0.5rem;
-  min-width: 68px;
+  padding: clamp(0.5rem, 1.8vw, 0.75rem) clamp(0.22rem, 1vw, 0.5rem);
+  min-width: clamp(52px, 18.5vw, 68px);
   box-shadow: 0 4px 12px rgba(166, 125, 43, 0.08);
   display: flex;
   flex-direction: column;
@@ -1296,7 +1326,7 @@ body {
 
 .timer-number {
   font-family: var(--font-serif-display);
-  font-size: 2rem;
+  font-size: clamp(1.4rem, 5.2vw, 2rem);
   font-weight: 700;
   color: var(--color-gold-deep);
   line-height: 1;
@@ -1305,23 +1335,23 @@ body {
 
 .timer-label {
   font-family: var(--font-sans);
-  font-size: 0.62rem;
+  font-size: clamp(0.5rem, 1.8vw, 0.62rem);
   font-weight: 600;
-  letter-spacing: 0.15em;
+  letter-spacing: clamp(0.08em, 0.4vw, 0.15em);
   color: var(--color-text-muted);
   text-transform: uppercase;
 }
 
 .timer-separator {
   font-family: var(--font-serif-display);
-  font-size: 1.8rem;
+  font-size: clamp(1.1rem, 4vw, 1.8rem);
   color: var(--color-gold-warm);
   font-weight: 600;
 }
 
 .countdown-date-badge {
   font-family: var(--font-serif-display);
-  font-size: 0.8rem;
+  font-size: clamp(0.72rem, 2.5vw, 0.8rem);
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--color-burgundy);
@@ -1361,13 +1391,17 @@ body {
   filter: brightness(1.028) contrast(1.02) drop-shadow(0 20px 44px rgba(105, 75, 38, 0.16)) drop-shadow(0 4px 14px rgba(120, 85, 45, 0.08));
 }
 
-@media (max-width: 540px) {
+@media (max-width: 580px) {
   .schedule-section {
     padding: 2.2rem 0 2.8rem;
   }
 
   .schedule-paper-card {
-    padding: 4.4rem 1.4rem 3.8rem;
+    width: calc(100% - 16px);
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: clamp(3.4rem, 10vw, 4.4rem) clamp(0.9rem, 3vw, 1.6rem) clamp(2.8rem, 8vw, 3.8rem);
   }
 }
 
@@ -1376,41 +1410,28 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 14px;
+  gap: clamp(6px, 2vw, 14px);
   margin-bottom: 0.9rem;
   width: 100%;
 }
 
 .schedule-heading {
   font-family: 'Pinyon Script', cursive;
-  font-size: 3.35rem;
+  font-size: clamp(2.1rem, 7.2vw, 3.35rem);
   color: #9f7636;
   margin: 0;
   line-height: 1.05;
   font-weight: 400;
   text-shadow: 0 1px 2px rgba(160, 122, 56, 0.22);
-  white-space: nowrap;
+  white-space: normal;
+  text-align: center;
 }
 
 .header-flourish {
-  width: 52px;
-  height: 20px;
+  width: clamp(26px, 7vw, 52px);
+  height: auto;
+  max-height: 20px;
   flex-shrink: 0;
-}
-
-@media (max-width: 480px) {
-  .schedule-heading {
-    font-size: 2.75rem;
-  }
-
-  .header-flourish {
-    width: 36px;
-    height: 15px;
-  }
-
-  .schedule-header {
-    gap: 8px;
-  }
 }
 
 /* Date Selector Filter Pills */
@@ -1427,14 +1448,17 @@ body {
   border: 1px solid rgba(166, 125, 43, 0.35);
   color: #7a6047;
   font-family: 'Cinzel', serif;
-  font-size: 0.72rem;
+  font-size: clamp(0.64rem, 2.1vw, 0.72rem);
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  padding: 0.35rem 0.95rem;
+  padding: 0.38rem 0.85rem;
   border-radius: 20px;
   cursor: pointer;
   transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
   outline: none;
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
 }
 
 .sched-pill:hover {
@@ -1654,10 +1678,10 @@ body {
 
 .timeline-row {
   display: grid;
-  grid-template-columns: 105px 40px 1.35fr;
+  grid-template-columns: clamp(66px, 20vw, 105px) clamp(28px, 8vw, 40px) 1fr;
   align-items: center;
   width: 100%;
-  min-height: 56px;
+  min-height: 52px;
   position: relative;
   cursor: pointer;
   border-radius: 8px;
@@ -1669,30 +1693,16 @@ body {
   background-color: rgba(166, 125, 43, 0.04);
 }
 
-@media (max-width: 440px) {
-  .timeline-row {
-    grid-template-columns: 82px 34px 1.3fr;
-    min-height: 50px;
-  }
-}
-
 .time-col {
   text-align: right;
   font-family: 'Cinzel', serif;
-  font-size: 1.28rem;
+  font-size: clamp(0.95rem, 3.2vw, 1.28rem);
   font-weight: 500;
   color: #6a5342;
   letter-spacing: 0.03em;
-  padding-right: 16px;
+  padding-right: clamp(8px, 2.5vw, 16px);
   line-height: 1;
   transition: color 0.3s ease, transform 0.3s ease;
-}
-
-@media (max-width: 440px) {
-  .time-col {
-    font-size: 1.08rem;
-    padding-right: 10px;
-  }
 }
 
 .marker-col {
@@ -1782,55 +1792,17 @@ body {
 
 .event-col {
   text-align: left;
-  padding-left: 16px;
-}
-
-@media (max-width: 440px) {
-  .event-col {
-    padding-left: 10px;
-  }
+  padding-left: clamp(8px, 2.5vw, 16px);
 }
 
 .event-name {
   font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 1.25rem;
+  font-size: clamp(1rem, 3.4vw, 1.25rem);
   font-weight: 500;
   color: #554133;
   line-height: 1.22;
   letter-spacing: 0.01em;
   transition: color 0.3s ease, transform 0.3s ease;
-}
-
-@media (max-width: 440px) {
-  .event-name {
-    font-size: 1.1rem;
-  }
-}
-
-.event-col {
-  text-align: left;
-  padding-left: 16px;
-}
-
-@media (max-width: 440px) {
-  .event-col {
-    padding-left: 10px;
-  }
-}
-
-.event-name {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 1.25rem;
-  font-weight: 500;
-  color: #554133;
-  line-height: 1.22;
-  letter-spacing: 0.01em;
-}
-
-@media (max-width: 440px) {
-  .event-name {
-    font-size: 1.1rem;
-  }
 }
 
 /* ==========================================================================
@@ -1854,7 +1826,7 @@ body {
 
 .location-heading {
   font-family: 'Pinyon Script', cursive;
-  font-size: 3.5rem;
+  font-size: clamp(2.4rem, 8vw, 3.5rem);
   color: #9f7636;
   margin: 0 0 0.2rem 0;
   line-height: 1.05;
@@ -1870,13 +1842,14 @@ body {
 }
 
 .location-divider-svg {
-  width: 92px;
-  height: 18px;
+  width: clamp(70px, 20vw, 92px);
+  height: auto;
+  max-height: 18px;
 }
 
 .location-venue-name {
   font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 1.45rem;
+  font-size: clamp(1.18rem, 4.2vw, 1.45rem);
   font-weight: 500;
   color: #554133;
   margin: 0 0 0.3rem 0;
@@ -1886,12 +1859,13 @@ body {
 
 .location-venue-address {
   font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 1.12rem;
+  font-size: clamp(0.92rem, 3.2vw, 1.12rem);
   font-weight: 400;
   color: #725c4b;
   line-height: 1.5;
   margin: 0 0 1.5rem 0;
   letter-spacing: 0.01em;
+  padding: 0 0.5rem;
 }
 
 /* ==========================================================================
@@ -1905,7 +1879,7 @@ body {
   background: radial-gradient(ellipse at 50% 15%, #ffffff 0%, #fcf7ed 60%, #f6ecdc 100%);
   border: 1.5px solid #d4c0a1;
   border-radius: 20px;
-  padding: 1.4rem 1.25rem 1.5rem;
+  padding: clamp(1rem, 3.5vw, 1.4rem) clamp(0.8rem, 3vw, 1.25rem) clamp(1.1rem, 3.8vw, 1.5rem);
   box-shadow:
     0 20px 48px rgba(120, 85, 45, 0.14),
     0 4px 14px rgba(166, 125, 43, 0.08),
@@ -1930,7 +1904,7 @@ body {
   align-items: center;
   gap: 6px;
   font-family: 'Cinzel', serif;
-  font-size: 0.72rem;
+  font-size: clamp(0.62rem, 2.1vw, 0.72rem);
   font-weight: 600;
   letter-spacing: 0.08em;
   color: #8c6428;
@@ -1948,7 +1922,7 @@ body {
 
 .location-landmark-pill {
   font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 0.92rem;
+  font-size: clamp(0.82rem, 2.7vw, 0.92rem);
   font-style: italic;
   font-weight: 500;
   color: #725c4b;
@@ -2008,7 +1982,7 @@ body {
 .map-window {
   position: relative;
   width: 100%;
-  height: 310px;
+  height: clamp(230px, 58vw, 310px);
   border-radius: 11px;
   overflow: hidden;
   background-color: #ede5d8;
@@ -2027,20 +2001,21 @@ body {
 /* Floating Venue Chip */
 .map-venue-chip {
   position: absolute;
-  top: 12px;
-  left: 12px;
+  top: 10px;
+  left: 10px;
   z-index: 8;
   background: rgba(253, 249, 243, 0.94);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  padding: 6px 14px;
+  padding: 5px 12px;
   border-radius: 30px;
   border: 1px solid rgba(166, 125, 43, 0.35);
   box-shadow: 0 4px 14px rgba(90, 45, 15, 0.16);
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
   pointer-events: none;
+  max-width: calc(100% - 20px);
 }
 
 .pulse-pin-dot {
@@ -2050,6 +2025,7 @@ body {
   border-radius: 50%;
   box-shadow: 0 0 0 0 rgba(200, 35, 51, 0.6);
   animation: pinPulseDot 2s infinite cubic-bezier(0.45, 0, 0.2, 1);
+  flex-shrink: 0;
 }
 
 @keyframes pinPulseDot {
@@ -2069,11 +2045,13 @@ body {
 
 .chip-text {
   font-family: 'Cinzel', serif;
-  font-size: 0.72rem;
+  font-size: clamp(0.62rem, 2.1vw, 0.72rem);
   font-weight: 600;
   color: #5a0f1b;
   letter-spacing: 0.05em;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Interactive Google Maps Iframe with Warm Vintage Filter */
@@ -2112,11 +2090,12 @@ body {
   justify-content: center;
   gap: 8px;
   padding: 12px 16px;
+  min-height: 44px;
   border-radius: 30px;
   background: linear-gradient(135deg, #7e1929 0%, #5a0f1b 100%);
   color: #ffffff !important;
   font-family: 'Cinzel', serif;
-  font-size: 0.8rem;
+  font-size: clamp(0.74rem, 2.4vw, 0.8rem);
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -2141,11 +2120,12 @@ body {
   justify-content: center;
   gap: 7px;
   padding: 12px 14px;
+  min-height: 44px;
   border-radius: 30px;
   background: #ffffff;
   color: #554133 !important;
   font-family: 'Cinzel', serif;
-  font-size: 0.78rem;
+  font-size: clamp(0.72rem, 2.3vw, 0.78rem);
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -2166,38 +2146,12 @@ body {
 
 @media (max-width: 480px) {
   .location-section {
-    padding: 2.2rem 0.75rem 1.6rem;
-  }
-
-  .location-heading {
-    font-size: 2.9rem;
-  }
-
-  .location-divider {
-    margin-bottom: 0.9rem;
-  }
-
-  .location-venue-name {
-    font-size: 1.28rem;
-  }
-
-  .location-venue-address {
-    font-size: 1.02rem;
-    margin-bottom: 1.25rem;
-    padding: 0 0.5rem;
-  }
-
-  .location-card-container {
-    padding: 1.15rem 0.9rem 1.25rem;
-    border-radius: 16px;
-  }
-
-  .map-window {
-    height: 270px;
+    padding: 2.2rem 0.65rem 1.6rem;
   }
 
   .location-actions {
     flex-direction: column;
+    width: 100%;
     gap: 8px;
   }
 
@@ -2205,7 +2159,15 @@ body {
   .btn-gold-openmap {
     width: 100%;
     padding: 11px 14px;
-    font-size: 0.76rem;
+  }
+
+  .location-card-header {
+    justify-content: center;
+  }
+
+  .location-landmark-pill {
+    width: 100%;
+    text-align: center;
   }
 }
 
@@ -2251,6 +2213,20 @@ body {
   background-position: center;
   filter: drop-shadow(0 20px 44px rgba(105, 75, 38, 0.18)) drop-shadow(0 4px 14px rgba(120, 85, 45, 0.08)) brightness(1.028) contrast(1.02);
   text-align: center;
+}
+
+@media (max-width: 580px) {
+  .etiquette-section {
+    padding: 2.2rem 0 2.6rem;
+  }
+
+  .etiquette-paper-card {
+    width: calc(100% - 16px);
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: clamp(3.4rem, 10vw, 4.4rem) clamp(1rem, 3.8vw, 1.8rem) clamp(3rem, 8.5vw, 4rem);
+  }
 }
 
 /* Botanical Corner Floral Overlays */
@@ -2299,7 +2275,7 @@ body {
 
 .sacred-arabic-bismillah {
   font-family: 'Amiri', 'Traditional Arabic', serif;
-  font-size: 2.35rem;
+  font-size: clamp(1.6rem, 5.8vw, 2.35rem);
   font-weight: 700;
   color: #8c6428;
   line-height: 1.35;
@@ -2340,18 +2316,19 @@ body {
 
 .shayari-text-hindi {
   font-family: 'Noto Serif Devanagari', 'Mangal', 'Nirmala UI', Georgia, serif;
-  font-size: 1.18rem;
+  font-size: clamp(0.92rem, 3.2vw, 1.18rem);
   font-weight: 500;
   color: #634327;
-  line-height: 1.82;
+  line-height: 1.8;
   margin: 0.4rem 0 0.35rem;
   letter-spacing: 0.015em;
   text-shadow: 0 1px 1px rgba(160, 120, 50, 0.08);
+  word-break: keep-all;
 }
 
 .shayari-translation {
   font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 0.96rem;
+  font-size: clamp(0.8rem, 2.7vw, 0.96rem);
   font-weight: 400;
   font-style: italic;
   color: #7a614d;
@@ -2362,52 +2339,26 @@ body {
 
 .shayari-couplet-names {
   font-family: 'Pinyon Script', cursive;
-  font-size: 1.95rem;
+  font-size: clamp(1.45rem, 5vw, 1.95rem);
   color: #9f7636;
   margin-top: 0.25rem;
   line-height: 1;
   text-shadow: 0 1px 2px rgba(160, 122, 56, 0.18);
 }
 
-@media (max-width: 540px) {
-  .etiquette-section {
-    padding: 2.2rem 0 2.6rem;
-  }
-
-  .etiquette-paper-card {
-    padding: 4.4rem 1.6rem 3.8rem;
-  }
-}
-
 @media (max-width: 480px) {
   .etiquette-flower.flower-tr {
-    width: 165px;
-    top: -6px;
+    width: clamp(100px, 30vw, 150px);
+    top: -4px;
     right: -4px;
+    opacity: 0.85;
   }
 
   .etiquette-flower.flower-bl {
-    width: 140px;
+    width: clamp(85px, 25vw, 125px);
     bottom: -2px;
     left: -2px;
-  }
-
-  .sacred-arabic-bismillah {
-    font-size: 1.95rem;
-  }
-
-  .shayari-text-hindi {
-    font-size: 1.05rem;
-    line-height: 1.72;
-  }
-
-  .shayari-translation {
-    font-size: 0.88rem;
-    max-width: 280px;
-  }
-
-  .shayari-couplet-names {
-    font-size: 1.7rem;
+    opacity: 0.85;
   }
 }
 
@@ -2813,7 +2764,7 @@ body {
 /* Title & names now live INSIDE the photo wrapper */
 .hope-title {
   font-family: 'Great Vibes', 'Alex Brush', cursive;
-  font-size: 3.2rem;
+  font-size: clamp(2.1rem, 7.2vw, 3.2rem);
   color: #fff;
   font-weight: 400;
   line-height: 1.15;
@@ -2823,7 +2774,7 @@ body {
 
 .hope-names {
   font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 1.45rem;
+  font-size: clamp(1.05rem, 3.6vw, 1.45rem);
   font-weight: 500;
   color: #fff;
   letter-spacing: 0.07em;
@@ -2834,7 +2785,7 @@ body {
 .hope-photo-card {
   position: relative;
   width: 100%;
-  max-width: 390px;
+  max-width: min(390px, calc(100vw - 24px));
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -2876,7 +2827,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 1.6rem;
+  padding-top: clamp(1.1rem, 3.8vw, 1.6rem);
   padding-bottom: 1rem;
   text-align: center;
 }
@@ -2905,42 +2856,38 @@ body {
 }
 
 .hope-flower.flower-left {
-  left: -42px;
-  bottom: -30px;
-  width: 280px;
+  left: clamp(-16px, -3.5vw, -42px);
+  bottom: clamp(-20px, -4vw, -30px);
+  width: clamp(130px, 40vw, 280px);
   height: auto;
   transform-origin: 20% 85%;
   animation: floralSwayLeft 5.5s ease-in-out infinite alternate;
 }
 
 .hope-flower.flower-right {
-  right: -42px;
-  bottom: -30px;
-  width: 280px;
+  right: clamp(-16px, -3.5vw, -42px);
+  bottom: clamp(-20px, -4vw, -30px);
+  width: clamp(130px, 40vw, 280px);
   height: auto;
   transform-origin: 80% 85%;
   animation: floralSwayRight 5.5s ease-in-out infinite alternate;
 }
 
-@media (max-width: 440px) {
-  .hope-title {
-    font-size: 2.6rem;
-  }
-
-  .hope-names {
-    font-size: 1.2rem;
+@media (max-width: 480px) {
+  .hope-section {
+    padding: 1.2rem 0.65rem 0;
   }
 
   .hope-flower.flower-left {
-    left: -40px;
-    bottom: -48px;
-    width: 190px;
+    left: -12px;
+    bottom: -20px;
+    width: clamp(120px, 38vw, 175px);
   }
 
   .hope-flower.flower-right {
-    right: -40px;
-    bottom: -48px;
-    width: 190px;
+    right: -12px;
+    bottom: -20px;
+    width: clamp(120px, 38vw, 175px);
   }
 }
 
@@ -2959,4 +2906,133 @@ body {
 .fade-in-on-scroll.is-visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* ==========================================================================
+   MOBILE & COMPACT DEVICE REFINEMENTS (<= 360px & Touch Optimization)
+   ========================================================================== */
+@media (max-width: 360px) {
+  .hero-script-tagline {
+    font-size: 2rem;
+  }
+
+  .hero-name {
+    font-size: 2.9rem;
+  }
+
+  .hero-amp {
+    font-size: 1.6rem;
+  }
+
+  .blessing-script-line.line-1 {
+    font-size: 1.95rem;
+  }
+
+  .blessing-script-line.line-2 {
+    font-size: 1.7rem;
+  }
+
+  .blessing-script-line.line-3 {
+    font-size: 1.35rem;
+  }
+
+  .timer-grid {
+    gap: 2px;
+  }
+
+  .timer-box {
+    min-width: 48px;
+    padding: 0.45rem 0.15rem;
+  }
+
+  .timer-number {
+    font-size: 1.3rem;
+  }
+
+  .timer-label {
+    font-size: 0.48rem;
+    letter-spacing: 0.06em;
+  }
+
+  .timer-separator {
+    font-size: 1rem;
+  }
+
+  .schedule-heading {
+    font-size: 1.95rem;
+  }
+
+  .header-flourish {
+    width: 22px;
+  }
+
+  .sched-pill {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.06em;
+  }
+
+  .timeline-row {
+    grid-template-columns: 58px 26px 1fr;
+  }
+
+  .time-col {
+    font-size: 0.88rem;
+    padding-right: 6px;
+  }
+
+  .event-name {
+    font-size: 0.95rem;
+  }
+
+  .location-heading {
+    font-size: 2.2rem;
+  }
+
+  .location-card-container {
+    padding: 0.9rem 0.6rem 1.1rem;
+    border-radius: 14px;
+  }
+
+  .map-window {
+    height: 220px;
+  }
+
+  .btn-royal-directions,
+  .btn-gold-openmap {
+    padding: 10px 12px;
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+  }
+
+  .sacred-arabic-bismillah {
+    font-size: 1.5rem;
+  }
+
+  .shayari-text-hindi {
+    font-size: 0.88rem;
+  }
+
+  .hope-title {
+    font-size: 1.95rem;
+  }
+
+  .hope-names {
+    font-size: 1rem;
+  }
+}
+
+/* Mobile Touch Optimization & Accessibility */
+@media (hover: none) and (pointer: coarse) {
+  .vintage-record-btn {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .sched-pill,
+  .btn-royal-directions,
+  .btn-gold-openmap,
+  .timeline-row,
+  .floral-artwork-stage {
+    -webkit-tap-highlight-color: transparent;
+  }
 }
