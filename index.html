@@ -22,6 +22,11 @@
 
 <body>
 
+  <!-- Top Luxury Gold Scroll Progress Bar (Surprise Indicator) -->
+  <div id="scrollProgressBar" class="luxury-scroll-progress" aria-hidden="true">
+    <div class="scroll-progress-fill" id="scrollProgressFill"></div>
+  </div>
+
   <!-- Audio Element -->
   <audio id="bgAudio" loop preload="auto">
     <source src="/assets/wedding_music.mp3" type="audio/mp3">
@@ -183,8 +188,8 @@
               <span class="hero-name">Shamseer</span>
             </div>
 
-            <!-- Scroll Down Prompt (Right above swans) -->
-            <div class="hero-scroll-cue">
+            <!-- Scroll Down Prompt (Interactive click to glide down) -->
+            <div class="hero-scroll-cue" id="heroScrollCue" role="button" tabindex="0" aria-label="Scroll down to view invitation" title="Scroll down">
               <span class="scroll-script">Scroll down</span>
               <div class="scroll-v-chevron"></div>
             </div>
@@ -574,8 +579,6 @@
 
     </div>
   </main>
-
-
 
   <!-- Vite / Main JavaScript -->
   <script type="module" src="/src/scripts/main.js"></script>

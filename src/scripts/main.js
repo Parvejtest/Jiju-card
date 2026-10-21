@@ -1,3 +1,6 @@
+import Lenis from 'lenis';
+import 'lenis/dist/lenis.css';
+
 /**
  * The Sacred Garden — Wedding Invitation Logic
  */
@@ -37,6 +40,62 @@ document.addEventListener('DOMContentLoaded', () => {
   const trackPill0 = document.getElementById('trackPill0');
   const trackPill1 = document.getElementById('trackPill1');
   const tooltipState = document.getElementById('tooltipState');
+
+  // Smooth Scrolling & Progress Elements
+  const scrollProgressFill = document.getElementById('scrollProgressFill');
+  const heroScrollCue = document.getElementById('heroScrollCue');
+
+  // Initialize Lenis for buttery-smooth, lag-free momentum scrolling
+  const lenis = new Lenis({
+    duration: 1.25,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    smoothWheel: true,
+    wheelMultiplier: 1.0,
+    touchMultiplier: 1.6,
+    infinite: false,
+  });
+
+  // Lock scrolling until envelope is opened
+  lenis.stop();
+
+  function raf(time) {
+    lenis.raf(time);
+    requestAnimationFrame(raf);
+  }
+  requestAnimationFrame(raf);
+
+  // Hook Lenis scroll events
+  lenis.on('scroll', ({ progress }) => {
+    // 1. Update luxury golden reading progress bar at top of screen
+    if (scrollProgressFill) {
+      scrollProgressFill.style.width = `${Math.min(100, Math.max(0, progress * 100))}%`;
+    }
+
+    // 2. Update timeline flower target
+    calculateTargetPosition();
+  });
+
+  // Interactive Hero "Scroll down" prompt click
+  if (heroScrollCue) {
+    heroScrollCue.addEventListener('click', () => {
+      const blessingSection = document.getElementById('blessing');
+      if (blessingSection) {
+        lenis.scrollTo(blessingSection, { offset: -25, duration: 1.35 });
+      } else {
+        lenis.scrollTo(window.innerHeight * 0.9, { duration: 1.35 });
+      }
+    });
+
+    heroScrollCue.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        const blessingSection = document.getElementById('blessing');
+        if (blessingSection) {
+          lenis.scrollTo(blessingSection, { offset: -25, duration: 1.35 });
+        }
+      }
+    });
+  }
 
   let audioUnlocked = false;
   let envelopeOpened = false;
@@ -253,6 +312,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     setTimeout(() => {
       envelopeOverlay.style.display = 'none';
+      lenis.start();
     }, 1300);
 
     // Play flap unfold transition video
@@ -753,10 +813,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (row) {
         const matched = rowData.find((d) => d.row === row);
         if (matched) {
-          window.scrollTo({
-            top: matched.scrollTrigger,
-            behavior: 'smooth'
-          });
+          lenis.scrollTo(matched.scrollTrigger, { duration: 1.2 });
           burstTravelerBloom(matched.x, matched.y);
         }
       }
