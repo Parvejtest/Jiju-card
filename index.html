@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Samma &amp; Shamseer — Wedding Celebration</title>
+  <meta name="description" content="A sacred wedding celebration of Samma &amp; Shamseer. November 15, 2026.">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/assets/wax_seal.png">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Amiri:wght@400;700&family=Cinzel:wght@400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400;1,600&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&family=Noto+Serif+Devanagari:wght@400;500;600&family=Pinyon+Script&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="/src/styles/main.css">
+</head>
+
+<body>
+
+  <!-- Audio Element -->
+  <audio id="bgAudio" loop preload="auto">
+    <source src="/assets/wedding_music.mp3" type="audio/mp3">
+  </audio>
+
+  <!-- ========================================================= -->
+  <!-- 1. ENVELOPE OPENING OVERLAY                               -->
+  <!-- ========================================================= -->
+  <div id="envelopeOverlay" class="envelope-overlay" role="button" aria-label="Tap to open invitation" tabindex="0">
+    <div class="envelope-container">
+      <img id="envelopeImg" src="/assets/envelope_cover.png" alt="Wedding Invitation Envelope" class="envelope-img"
+        draggable="false">
+
+      <!-- Pulsing Tap Prompt -->
+      <div class="tap-prompt">
+        <div class="tap-chevron"></div>
+        <div class="tap-label">TAP TO OPEN</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Opening Video Flap Animation (Plays on Tap) -->
+  <div id="videoTransitionWrap" class="video-transition-wrap" aria-hidden="true">
+    <video id="envelopeVideo" playsinline muted preload="auto" class="envelope-video">
+      <source src="/assets/envelope_fold.mp4" type="video/mp4">
+    </video>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- 2. VINTAGE INSTRUMENTAL CASSETTE / VINYL TURNTABLE PLAYER -->
+  <!-- ========================================================= -->
+  <div id="audioPlayerWrap" class="vintage-player-wrap is-playing" role="region" aria-label="Instrumental Music Player">
+    <!-- Floating Musical Notes Stage -->
+    <div class="player-notes-stage" id="playerNotesStage" aria-hidden="true"></div>
+
+    <!-- Song Switch Toast Notification Pill -->
+    <div class="song-toast-notification" id="songToastNotification" aria-live="polite">
+      <span class="toast-note-icon">♫</span>
+      <div class="toast-text-group">
+        <span class="toast-side-tag" id="toastSideTag">SIDE A</span>
+        <span class="toast-track-name" id="toastTrackName">Royal Orchestral Serenade</span>
+      </div>
+    </div>
+
+    <!-- Antique Tonearm / Needle (Rotates onto record when playing) -->
+    <div class="turntable-tonearm arm-on-record" id="turntableTonearm" aria-hidden="true">
+      <div class="tonearm-pivot"></div>
+      <div class="tonearm-beam"></div>
+      <div class="tonearm-head">
+        <div class="tonearm-cartridge"></div>
+        <div class="tonearm-needle"></div>
+      </div>
+    </div>
+
+    <!-- Quick Track Switcher Button (Side A ⇄ Side B) -->
+    <button id="trackSwitchBtn" class="vintage-track-switch-btn" type="button" aria-label="Switch song to next track" title="Switch Song (Side A ⇄ Side B)">
+      <svg class="switch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="4 4 14 12 4 20 4 4" fill="currentColor"/>
+        <line x1="18" y1="4" x2="18" y2="20"/>
+      </svg>
+      <span class="track-next-badge" id="trackNextBadge" title="Next: Side B">B</span>
+    </button>
+
+    <!-- The Round Instrumental Vinyl / Cassette Disc Button -->
+    <button id="audioToggleBtn" class="vintage-record-btn" aria-label="Toggle background instrumental music" title="Tap to play / pause • Click next button to switch songs">
+      <!-- Antique Gold Beaded Outer Rim -->
+      <div class="record-brass-bezel"></div>
+
+      <!-- Rotating Vinyl Record / Round Cassette Reel -->
+      <div class="vinyl-disc spinning" id="vinylDisc" aria-hidden="true">
+        <!-- High-Fidelity Vinyl Grooves -->
+        <div class="vinyl-groove-rings"></div>
+        <div class="vinyl-specular-light"></div>
+
+        <!-- Center Gold Instrumental Cassette Label -->
+        <div class="vinyl-center-label side-a" id="vinylCenterLabel">
+          <div class="label-inner-bezel"></div>
+          <span class="label-side-pill" id="labelSidePill">SIDE A</span>
+          <!-- Vintage Musical Note Icon -->
+          <svg class="label-music-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+          </svg>
+          <span class="label-track-title" id="labelTrackTitle">ROYAL SERENADE</span>
+          <div class="label-spindle"></div>
+        </div>
+      </div>
+
+      <!-- Center Play / Pause Floating Overlay -->
+      <div class="record-center-overlay" id="recordCenterOverlay" aria-hidden="true">
+        <svg id="iconPause" class="record-state-icon" viewBox="0 0 24 24" fill="currentColor">
+          <rect x="6.5" y="5.5" width="3.5" height="13" rx="1.2" />
+          <rect x="14" y="5.5" width="3.5" height="13" rx="1.2" />
+        </svg>
+        <svg id="iconPlay" class="record-state-icon hidden" viewBox="0 0 24 24" fill="currentColor">
+          <polygon points="8,5 19.5,12 8,19" />
+        </svg>
+      </div>
+
+      <!-- Vintage Equalizer Frequency Waves Badge -->
+      <div class="record-eq-badge" id="recordEqBadge" aria-hidden="true">
+        <span class="eq-bar bar-1"></span>
+        <span class="eq-bar bar-2"></span>
+        <span class="eq-bar bar-3"></span>
+        <span class="eq-bar bar-4"></span>
+      </div>
+    </button>
+
+    <!-- Interactive Track Flyout Menu & Tooltip -->
+    <div class="record-genre-tooltip" id="recordGenreTooltip">
+      <div class="tooltip-header">
+        <span class="tooltip-title">INSTRUMENTAL COLLECTION</span>
+        <span class="tooltip-state" id="tooltipState">Playing Music</span>
+      </div>
+      <div class="track-selector-list" role="list">
+        <div class="track-select-pill active" data-track="0" id="trackPill0" role="button" tabindex="0">
+          <span class="pill-dot"></span>
+          <span class="pill-side">SIDE A</span>
+          <span class="pill-name">Royal Orchestral Serenade</span>
+        </div>
+        <div class="track-select-pill" data-track="1" id="trackPill1" role="button" tabindex="0">
+          <span class="pill-dot"></span>
+          <span class="pill-side">SIDE B</span>
+          <span class="pill-name">Sacred Garden Symphony</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- 3. MAIN INVITATION CARD STREAM                            -->
+  <!-- ========================================================= -->
+  <main class="page-wrapper">
+    <div class="invitation-container">
+
+      <!-- ===================================================== -->
+      <!-- SECTION 1: HERO ARCHWAY & SWANS ON LAKE (EXACT MATCH) -->
+      <!-- ===================================================== -->
+      <section class="section hero-section" id="hero">
+        <div class="hero-arch-wrapper">
+          <!-- Looping Swans Video (Crystal Clear, Full Archway) -->
+          <div class="hero-video-container">
+            <video class="hero-video" autoplay muted loop playsinline>
+              <source src="/assets/swans_lake.mp4" type="video/mp4">
+            </video>
+            <!-- Very soft ambient golden light over text area only -->
+            <div class="hero-text-glow"></div>
+          </div>
+
+          <!-- Hero Typography Layer Exactly Placed -->
+          <div class="hero-content">
+            <p class="hero-script-tagline">Wedding Day</p>
+            <p class="hero-date">15.11.26</p>
+
+            <div class="hero-names-stack">
+              <span class="hero-name">Samma</span>
+              <span class="hero-amp">&amp;</span>
+              <span class="hero-name">Shamseer</span>
+            </div>
+
+            <!-- Scroll Down Prompt (Right above swans) -->
+            <div class="hero-scroll-cue">
+              <span class="scroll-script">Scroll down</span>
+              <div class="scroll-v-chevron"></div>
+            </div>
+          </div>
+
+          <!-- Animated Botanical Bouquets on Base of Arch (Overlapping into Torn Paper) -->
+          <div class="hero-floral-decor" aria-hidden="true">
+            <img src="/assets/hero_flower_right.png" alt="" class="hero-bouquet bouquet-left" draggable="false">
+            <img src="/assets/hero_flower_left.png" alt="" class="hero-bouquet bouquet-right" draggable="false">
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================== -->
+      <!-- SECTION 2: BISMILLAH & BLESSING CARD                  -->
+      <!-- ===================================================== -->
+      <section class="section blessing-section" id="blessing">
+        <div class="torn-paper-card fade-in-on-scroll">
+          <!-- Gold Metallic Calligraphy Image -->
+          <div class="bismillah-wrapper">
+            <img src="/assets/torn_paper_top.png" alt="بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيمِ"
+              class="bismillah-calligraphy-img" draggable="false">
+          </div>
+
+          <!-- Script Quote Stack -->
+          <div class="blessing-script-lines">
+            <span class="blessing-script-line line-1">Two Souls</span>
+            <span class="blessing-script-line line-2">One destiny</span>
+            <span class="blessing-script-line line-3">A Lifetime written by Allah</span>
+          </div>
+
+          <!-- Invitation Message -->
+          <div class="blessing-invitation-text">
+            <p class="blessing-salutation">Dear Friends and Family</p>
+            <p class="blessing-body">
+              Join us for an evening of love,<br>
+              laughter, duas, and unforgettable<br>
+              memories as we begin our forever.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================== -->
+      <!-- SECTION 3: LIVE COUNTDOWN TIMER                       -->
+      <!-- ===================================================== -->
+      <section class="section countdown-section">
+        <div class="countdown-inner fade-in-on-scroll">
+          <h2 class="countdown-title">The Celebration Begins In</h2>
+
+          <div class="timer-grid" id="timerGrid" data-target="2026-11-15T11:00:00+05:30">
+            <div class="timer-box">
+              <span class="timer-number" id="days">00</span>
+              <span class="timer-label">DAYS</span>
+            </div>
+            <span class="timer-separator">:</span>
+            <div class="timer-box">
+              <span class="timer-number" id="hours">00</span>
+              <span class="timer-label">HOURS</span>
+            </div>
+            <span class="timer-separator">:</span>
+            <div class="timer-box">
+              <span class="timer-number" id="minutes">00</span>
+              <span class="timer-label">MINUTES</span>
+            </div>
+            <span class="timer-separator">:</span>
+            <div class="timer-box">
+              <span class="timer-number" id="seconds">00</span>
+              <span class="timer-label">SECONDS</span>
+            </div>
+          </div>
+
+          <p class="countdown-date-badge">Sunday, 15th November 2026</p>
+        </div>
+      </section>
+
+      <!-- ===================================================== -->
+      <!-- SECTION 4: 2-DAY SCHEDULE OF EVENTS                   -->
+      <!-- ===================================================== -->
+      <section class="section schedule-section" id="schedule">
+        <div class="schedule-paper-card fade-in-on-scroll">
+
+          <!-- Header with Flourishes matching reference -->
+          <div class="schedule-header">
+            <svg class="header-flourish left" viewBox="0 0 60 22" fill="none" aria-hidden="true">
+              <path
+                d="M56 11C44 11 36 7 28 3.5C20 0 14 1.5 8 6C2 10.5 0.5 16 6 18C11.5 20 17 16 15 11C13 6 6 7 4 11C2 15 6 17 8 16"
+                stroke="#9f7636" stroke-width="1.3" stroke-linecap="round" />
+              <path d="M34 6.5C30 10 24 13 18 14" stroke="#9f7636" stroke-width="1.1" stroke-linecap="round" />
+              <circle cx="58" cy="11" r="1.5" fill="#9f7636" />
+            </svg>
+            <h2 class="schedule-heading">Schedule of Events</h2>
+            <svg class="header-flourish right" viewBox="0 0 60 22" fill="none" aria-hidden="true">
+              <path
+                d="M4 11C16 11 24 7 32 3.5C40 0 46 1.5 52 6C58 10.5 59.5 16 54 18C48.5 20 43 16 45 11C47 6 54 7 56 11C58 15 54 17 52 16"
+                stroke="#9f7636" stroke-width="1.3" stroke-linecap="round" />
+              <path d="M26 6.5C30 10 36 13 42 14" stroke="#9f7636" stroke-width="1.1" stroke-linecap="round" />
+              <circle cx="2" cy="11" r="1.5" fill="#9f7636" />
+            </svg>
+          </div>
+
+          <!-- Date Filter Pills (Two Parts Selector) -->
+          <div class="schedule-filter-tabs" role="tablist" aria-label="Filter events by date">
+            <button class="sched-pill active" data-filter="all" type="button" role="tab" aria-selected="true">All
+              Events</button>
+            <button class="sched-pill" data-filter="day1" type="button" role="tab" aria-selected="false">14th
+              November</button>
+            <button class="sched-pill" data-filter="day2" type="button" role="tab" aria-selected="false">15th
+              November</button>
+          </div>
+
+          <!-- Timeline Container in Two Parts with Interactive Traveling Rose -->
+          <div class="schedule-timeline" id="scheduleTimeline">
+            <!-- Continuous Golden Stem Track & Active Progress Fill -->
+            <div class="timeline-stem-track" id="timelineStemTrack" aria-hidden="true">
+              <div class="timeline-stem-line"></div>
+              <div class="timeline-stem-progress" id="timelineStemProgress"></div>
+            </div>
+
+            <!-- Floating / Traveling Flower along the Timeline Track -->
+            <div class="timeline-traveler" id="timelineTraveler" title="Click to bloom" role="button" tabindex="0" aria-label="Wedding Rose Indicator">
+              <div class="traveler-aura"></div>
+              <img src="/assets/rose_corner.png" alt="Traveling Rose" class="traveling-rose-img" draggable="false">
+              <span class="traveler-sparkle sp-1" aria-hidden="true">✦</span>
+              <span class="traveler-sparkle sp-2" aria-hidden="true">✦</span>
+            </div>
+
+            <!-- PART 1: 14TH NOVEMBER -->
+            <div class="timeline-part" id="schedulePart1">
+              <div class="part-divider-badge">
+                <span class="part-date-label">Saturday, 14th November</span>
+              </div>
+
+              <div class="timeline-row" data-event-index="0">
+                <div class="time-col">5 PM</div>
+                <div class="marker-col"><span class="diamond-marker" aria-hidden="true"></span></div>
+                <div class="event-col">
+                  <div class="event-name">Haldi Ceremony</div>
+                </div>
+              </div>
+
+              <div class="timeline-row" data-event-index="1">
+                <div class="time-col">7 PM</div>
+                <div class="marker-col"><span class="diamond-marker" aria-hidden="true"></span></div>
+                <div class="event-col">
+                  <div class="event-name">Milad Un Nabi</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- PART 2: 15TH NOVEMBER -->
+            <div class="timeline-part" id="schedulePart2">
+              <div class="part-divider-badge">
+                <span class="part-date-label">Sunday, 15th November</span>
+              </div>
+
+              <div class="timeline-row" data-event-index="2">
+                <div class="time-col">11:00 PM</div>
+                <div class="marker-col"><span class="diamond-marker" aria-hidden="true"></span></div>
+                <div class="event-col">
+                  <div class="event-name">Dawat-e-Ta'amdari</div>
+                </div>
+              </div>
+
+              <div class="timeline-row highlight-row" data-event-index="3">
+                <div class="time-col">8 PM</div>
+                <div class="marker-col">
+                  <span class="diamond-marker finale-marker" aria-hidden="true"></span>
+                </div>
+                <div class="event-col">
+                  <div class="event-name">Arrival of Barat</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===================================================== -->
+      <!-- SECTION 5: VENUE & DIRECTIONS                         -->
+      <!-- ===================================================== -->
+      <section class="section location-section" id="location">
+        <div class="location-inner fade-in-on-scroll">
+
+          <h2 class="location-heading">Location</h2>
+
+          <!-- Ornate Filigree Divider matching reference -->
+          <div class="location-divider" aria-hidden="true">
+            <svg class="location-divider-svg" viewBox="0 0 90 18" fill="none">
+              <path d="M5 9H35M55 9H85" stroke="#c5a880" stroke-width="1" stroke-linecap="round" />
+              <path d="M37 9C42 5 43 2.5 45 1C47 2.5 48 5 53 9C48 13 47 15.5 45 17C43 15.5 42 13 37 9Z" fill="none"
+                stroke="#9f7636" stroke-width="1.2" />
+              <circle cx="45" cy="9" r="1.8" fill="#9f7636" />
+            </svg>
+          </div>
+
+          <!-- Venue Name & Address matching reference typography -->
+          <h3 class="location-venue-name">Barabilla Wedding Venue</h3>
+          <p class="location-venue-address">
+            Address: Barabilla High School Road, Barabilla, Haptiagach,<br>
+            PIN 733202, West Bengal, India
+          </p>
+
+          <!-- Luxury Royal Framed Map Container -->
+          <div class="location-card-container">
+            <!-- Decorative Header Metadata Ribbon -->
+            <div class="location-card-header">
+              <span class="location-geo-badge">
+                <svg class="geo-pin-icon" viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                </svg>
+                <span>26°28'47.4"N 88°19'46.9"E</span>
+              </span>
+              <span class="location-landmark-pill">Barabilla High School Road</span>
+            </div>
+
+            <!-- The Framed Map Window with Antique Gold Borders & Corner Accents -->
+            <div class="map-gold-frame">
+              <span class="frame-corner top-left" aria-hidden="true"></span>
+              <span class="frame-corner top-right" aria-hidden="true"></span>
+              <span class="frame-corner bottom-left" aria-hidden="true"></span>
+              <span class="frame-corner bottom-right" aria-hidden="true"></span>
+
+              <div class="map-window">
+                <!-- Soft Warm Vignette Overlay -->
+                <div class="map-vignette-overlay" aria-hidden="true"></div>
+
+                <!-- Floating Venue Chip -->
+                <div class="map-venue-chip">
+                  <span class="pulse-pin-dot"></span>
+                  <span class="chip-text">Barabilla Wedding Venue</span>
+                </div>
+
+                <!-- Live Interactive Google Map Embed with subtle warm tones -->
+                <iframe title="Google Maps Location for Barabilla Wedding Venue" class="location-google-iframe"
+                  src="https://maps.google.com/maps?q=26.479843,88.329695&hl=en&z=15&output=embed" loading="lazy"
+                  allowfullscreen="" referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+              </div>
+            </div>
+
+            <!-- Luxury Action Buttons Bar -->
+            <div class="location-actions">
+              <a href="https://www.google.com/maps/dir/?api=1&destination=26.479843,88.329695" target="_blank"
+                rel="noopener noreferrer" class="btn-royal-directions"
+                title="Get turn-by-turn navigation in Google Maps">
+                <svg class="action-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="3 11 22 2 13 21 11 13 3 11"></polygon>
+                </svg>
+                <span>Get Directions</span>
+              </a>
+
+              <a href="https://maps.app.goo.gl/fmBrmJL6tnRLKe5r8" target="_blank" rel="noopener noreferrer"
+                class="btn-gold-openmap" title="Open full destination in Google Maps">
+                <svg class="action-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                  <polyline points="15 3 21 3 21 9"></polyline>
+                  <line x1="10" y1="14" x2="21" y2="3"></line>
+                </svg>
+                <span>Open in Maps</span>
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+
+      <!-- ===================================================== -->
+      <!-- SECTION 7: DRESS CODE & GIFT PREFERENCE               -->
+      <!-- ===================================================== -->
+      <!-- SECTION 7: SACRED BLESSINGS & SHAYARI CARD            -->
+      <!-- ===================================================== -->
+      <section class="section etiquette-section">
+        <div class="etiquette-paper-card fade-in-on-scroll">
+          <!-- Top-Right Botanical Corner Bouquet with Cascading Ivy -->
+          <img src="/assets/etiquette_flower_tr.png" alt="" class="etiquette-flower flower-tr" aria-hidden="true"
+            draggable="false">
+
+          <!-- Bottom-Left Botanical Corner Bouquet with Branching Rose -->
+          <img src="/assets/etiquette_flower_bl.png" alt="" class="etiquette-flower flower-bl" aria-hidden="true"
+            draggable="false">
+
+          <div class="etiquette-content">
+            <!-- Sacred Islamic Blessing Header (Bismillah) -->
+            <div class="sacred-blessing-header">
+              <div class="sacred-arabic-bismillah" dir="rtl" lang="ar">
+                بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ
+              </div>
+            </div>
+
+            <!-- Touching Wedding Shayari Underneath -->
+            <div class="etiquette-shayari-wrap">
+              <div class="shayari-divider-icon">❦ ❧</div>
+              <p class="shayari-text-hindi">
+                “दुआओं के साए में एक नए सफर की शुरुआत हो,<br>
+                सम्मा और शमशीर के रिश्ते में खुशियों की बरसात हो।<br>
+                तोहफ़े की जगह बस आपका प्यार और दुआ चाहिए,<br>
+                आपकी मौजूदगी ही हमारे लिए सबसे अनमोल सौगात हो।”
+              </p>
+              <p class="shayari-translation">
+                “Two souls united under Allah's grace — your loving presence and prayers are our greatest treasure.”
+              </p>
+              <div class="shayari-couplet-names">With Love &amp; Dua — Samma &amp; Shamseer</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================== -->
+      <!-- SECTION 8: ENCHANTED BOTANICAL FLORAL INTERLUDE       -->
+      <!-- ===================================================== -->
+      <section class="section floral-interlude-section" id="floralInterlude">
+        <div class="floral-interlude-wrap fade-in-on-scroll">
+
+          <!-- Top Antique Gold Filigree Flourish -->
+          <div class="floral-filigree-top" aria-hidden="true">
+            <img src="/assets/floral_left.png" alt="" class="filigree-wing left" draggable="false">
+            <span class="filigree-center-icon">❦</span>
+            <img src="/assets/floral_right.png" alt="" class="filigree-wing right" draggable="false">
+          </div>
+
+          <!-- Central Watercolor Floral Garland & Petal Stage -->
+          <div class="floral-artwork-stage" id="floralArtworkStage" role="button" tabindex="0"
+            aria-label="Interactive Blooming Flowers - Tap to shower petals">
+            <!-- Ambient Golden Aura Glow -->
+            <div class="floral-ambient-glow" aria-hidden="true"></div>
+
+            <!-- Watercolor Floral Garland Artwork -->
+            <img src="/assets/floral_garland.png" alt="Botanical Wedding Blossom Garland" class="floral-garland-art"
+              draggable="false">
+
+            <!-- Floating Ambient Rose Petals -->
+            <div class="ambient-petals-layer" id="ambientPetalsLayer" aria-hidden="true">
+              <span class="petal-drift p-1"></span>
+              <span class="petal-drift p-2"></span>
+              <span class="petal-drift p-3"></span>
+              <span class="petal-drift p-4"></span>
+              <span class="petal-drift p-5"></span>
+            </div>
+
+            <!-- Interactive Bloom Ripple Center -->
+            <div class="blossom-glow-core" aria-hidden="true"></div>
+          </div>
+
+          <!-- Bottom Royal Filigree Finial -->
+          <div class="floral-filigree-bottom" aria-hidden="true">
+            <div class="filigree-divider-line"></div>
+            <div class="filigree-rosette">❧ ❦ ❧</div>
+            <div class="filigree-divider-line"></div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===================================================== -->
+      <!-- SECTION 9: HOPE TO SEE YOU PHOTO CARD                 -->
+      <!-- ===================================================== -->
+      <section class="section hope-section" id="hopeSection">
+        <div class="hope-inner fade-in-on-scroll">
+
+          <div class="hope-photo-card">
+            <div class="hope-photo-wrapper">
+              <img src="/assets/couple_field.jpeg" alt="Samma and Shamseer" class="hope-couple-img" loading="lazy">
+              <!-- Top gradient shadow overlay for text readability -->
+              <div class="hope-top-overlay"></div>
+              <!-- Text overlaid on top of photo -->
+              <div class="hope-text-overlay">
+                <h2 class="hope-title">Hope to see you there!</h2>
+                <p class="hope-names">Samma &amp; Shamseer</p>
+              </div>
+            </div>
+
+            <!-- Left & Right Botanical Bouquets Framing Bottom of Photo -->
+            <div class="hope-floral-decor" aria-hidden="true">
+              <img src="/assets/right_bottom.png" alt="" class="hope-flower flower-left" draggable="false">
+              <img src="/assets/left_bottom.png" alt="" class="hope-flower flower-right" draggable="false">
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+    </div>
+  </main>
+
+
+
+  <!-- Vite / Main JavaScript -->
+  <script type="module" src="/src/scripts/main.js"></script>
+</body>
+
+</html>
