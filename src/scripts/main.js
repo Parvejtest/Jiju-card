@@ -41,6 +41,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const trackPill1 = document.getElementById('trackPill1');
   const tooltipState = document.getElementById('tooltipState');
 
+  // 15-Second Celebratory Dance Callout Elements
+  const danceNudgeBubble = document.getElementById('danceNudgeBubble');
+  const nudgeActionBtn = document.getElementById('nudgeActionBtn');
+  const nudgeCloseBtn = document.getElementById('nudgeCloseBtn');
+
+  // Celebratory Dancing Avatar & Extra Bass Elements
+  const dancingAvatarWrap = document.getElementById('dancingAvatarWrap');
+  const dancingAvatarImg = document.getElementById('dancingAvatarImg');
+  const avatarCloseBtn = document.getElementById('avatarCloseBtn');
+  const avatarDancerStage = document.getElementById('avatarDancerStage');
+  const avatarSparklesStage = document.getElementById('avatarSparklesStage');
+
   // Smooth Scrolling & Progress Elements
   const scrollProgressFill = document.getElementById('scrollProgressFill');
   const heroScrollCue = document.getElementById('heroScrollCue');
@@ -102,6 +114,162 @@ document.addEventListener('DOMContentLoaded', () => {
   let notesInterval = null;
   let toastTimeout = null;
   let isSwitchingTrack = false;
+  let autoSwitchTimer = null;
+  const AUTO_SWITCH_MS = 90000; // Auto-transition to next track after 1.5 minutes
+
+  // Web Audio Extra Bass & Live Audio Reactivity Architecture
+  let audioCtx = null;
+  let bassFilter = null;
+  let audioAnalyser = null;
+  let audioFreqData = null;
+  let liveBassAnimFrame = null;
+  let danceNudgeTimer = null;
+  let danceNudgeAutoDismissTimer = null;
+
+  function setupWebAudioBass() {
+    if (audioCtx) {
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      return;
+    }
+    try {
+      const AudioCtxClass = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtxClass) return;
+      audioCtx = new AudioCtxClass();
+      const source = audioCtx.createMediaElementSource(bgAudio);
+
+      // Real-time Audio Frequency Analyser for Speaker Bass Pumping
+      audioAnalyser = audioCtx.createAnalyser();
+      audioAnalyser.fftSize = 128;
+      audioAnalyser.smoothingTimeConstant = 0.75;
+      audioFreqData = new Uint8Array(audioAnalyser.frequencyBinCount);
+
+      // Low-shelf bass boost filter for punchy acoustic feel
+      bassFilter = audioCtx.createBiquadFilter();
+      bassFilter.type = 'lowshelf';
+      bassFilter.frequency.value = 115;
+      bassFilter.gain.value = 0;
+
+      source.connect(audioAnalyser);
+      audioAnalyser.connect(bassFilter);
+      bassFilter.connect(audioCtx.destination);
+
+      startLiveBassLoop();
+    } catch (e) {
+      // Audio element might already be connected
+    }
+  }
+
+  // Live Subwoofer Bass Reactivity Loop: scales avatar dynamically when bass gets louder
+  function startLiveBassLoop() {
+    if (liveBassAnimFrame) return;
+
+    function renderBassFrame() {
+      if (
+        audioAnalyser &&
+        audioFreqData &&
+        currentTrackIndex === 1 &&
+        !bgAudio.paused &&
+        dancingAvatarWrap &&
+        !dancingAvatarWrap.classList.contains('hidden')
+      ) {
+        audioAnalyser.getByteFrequencyData(audioFreqData);
+        // Average low-frequency sub-bass bins (20Hz - 160Hz)
+        const subBass = (audioFreqData[0] + audioFreqData[1] + audioFreqData[2] + audioFreqData[3]) / 4;
+        
+        // Dynamically scale bass zoom intensity: louder bass = bigger zoom in/out!
+        const bassMultiplier = 1 + (subBass / 255) * 0.35;
+        dancingAvatarWrap.style.setProperty('--live-bass-scale', bassMultiplier.toFixed(3));
+      }
+      liveBassAnimFrame = requestAnimationFrame(renderBassFrame);
+    }
+    liveBassAnimFrame = requestAnimationFrame(renderBassFrame);
+  }
+
+  // 15-Second Nudge: Prompts the user to change track and dance!
+  function scheduleDanceNudge() {
+    cancelDanceNudge();
+    danceNudgeTimer = setTimeout(() => {
+      // Only show if user is still playing track 0 (Side A)
+      if (currentTrackIndex === 0) {
+        showDanceNudge();
+      }
+    }, 15000); // 15 seconds after envelope opening
+  }
+
+  function showDanceNudge() {
+    if (!danceNudgeBubble || currentTrackIndex !== 0) return;
+    danceNudgeBubble.classList.remove('hidden');
+    audioPlayerWrap?.classList.add('dance-nudge-active');
+
+    // Auto-dismiss smoothly after 14 seconds if user doesn't click
+    if (danceNudgeAutoDismissTimer) clearTimeout(danceNudgeAutoDismissTimer);
+    danceNudgeAutoDismissTimer = setTimeout(hideDanceNudge, 14000);
+  }
+
+  function hideDanceNudge() {
+    if (danceNudgeBubble) danceNudgeBubble.classList.add('hidden');
+    audioPlayerWrap?.classList.remove('dance-nudge-active');
+    if (danceNudgeAutoDismissTimer) {
+      clearTimeout(danceNudgeAutoDismissTimer);
+      danceNudgeAutoDismissTimer = null;
+    }
+  }
+
+  function cancelDanceNudge() {
+    if (danceNudgeTimer) {
+      clearTimeout(danceNudgeTimer);
+      danceNudgeTimer = null;
+    }
+    hideDanceNudge();
+  }
+
+  function startAutoSwitchTimer() {
+    stopAutoSwitchTimer();
+    // Only auto-switch if currently on Side A (first track)
+    if (currentTrackIndex === 0) {
+      autoSwitchTimer = setTimeout(() => {
+        if (currentTrackIndex === 0 && !bgAudio.paused) {
+          switchTrack(1); // Advance to Side B!
+        }
+      }, AUTO_SWITCH_MS);
+    }
+  }
+
+  function stopAutoSwitchTimer() {
+    if (autoSwitchTimer) {
+      clearTimeout(autoSwitchTimer);
+      autoSwitchTimer = null;
+    }
+  }
+
+  // Interactive Avatar Tap Celebration
+  function triggerAvatarCelebration() {
+    if (!dancingAvatarImg) return;
+    dancingAvatarImg.classList.remove('spin-celebrate');
+    void dancingAvatarImg.offsetWidth;
+    dancingAvatarImg.classList.add('spin-celebrate');
+
+    for (let i = 0; i < 6; i++) {
+      setTimeout(spawnCelebrationParticle, i * 130);
+    }
+  }
+
+  function spawnCelebrationParticle() {
+    if (!avatarSparklesStage) return;
+    const p = document.createElement('span');
+    p.className = 'sparkle-particle';
+    const symbols = ['💖', '✨', '♫', '💛', '✦', '🌹', '𝄞'];
+    p.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+    p.style.left = `${15 + Math.random() * 70}%`;
+    p.style.top = `${10 + Math.random() * 50}%`;
+    p.style.fontSize = `${13 + Math.random() * 7}px`;
+    avatarSparklesStage.appendChild(p);
+    setTimeout(() => {
+      if (p.parentNode) p.parentNode.removeChild(p);
+    }, 2000);
+  }
 
   const tracks = [
     {
@@ -170,6 +338,9 @@ document.addEventListener('DOMContentLoaded', () => {
       iconPause?.classList.remove('hidden');
       if (tooltipState) tooltipState.textContent = 'Playing Music';
       startNoteSpawner();
+      startAutoSwitchTimer();
+      dancingAvatarWrap?.classList.remove('is-paused');
+      setupWebAudioBass();
     } else {
       audioPlayerWrap?.classList.remove('is-playing');
       turntableTonearm?.classList.remove('arm-on-record');
@@ -178,6 +349,8 @@ document.addEventListener('DOMContentLoaded', () => {
       iconPlay?.classList.remove('hidden');
       if (tooltipState) tooltipState.textContent = 'Paused • Tap to Play';
       stopNoteSpawner();
+      stopAutoSwitchTimer();
+      dancingAvatarWrap?.classList.add('is-paused');
     }
   }
 
@@ -197,6 +370,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (isSwitchingTrack) return;
     if (targetIndex === currentTrackIndex && !bgAudio.paused) return;
 
+    cancelDanceNudge();
     isSwitchingTrack = true;
     currentTrackIndex = targetIndex;
     const track = tracks[currentTrackIndex];
@@ -211,7 +385,7 @@ document.addEventListener('DOMContentLoaded', () => {
       vinylDisc.classList.add('flipping');
     }
 
-    // 3. Update center label and pills midway through the flip
+    // 3. Update center label, pills, dancing avatar & bass midway through the flip
     setTimeout(() => {
       if (vinylCenterLabel) {
         vinylCenterLabel.className = `vinyl-center-label ${track.labelClass}`;
@@ -222,6 +396,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (trackPill0) trackPill0.classList.toggle('active', currentTrackIndex === 0);
       if (trackPill1) trackPill1.classList.toggle('active', currentTrackIndex === 1);
+
+      // Handle Dancing Avatar & Extra Bass on Second Song (Side B)
+      if (currentTrackIndex === 1) {
+        setupWebAudioBass();
+        if (bassFilter && audioCtx) {
+          bassFilter.gain.setTargetAtTime(6.5, audioCtx.currentTime, 0.3);
+        }
+        audioPlayerWrap?.classList.add('extra-bass-active');
+        dancingAvatarWrap?.classList.remove('hidden');
+        triggerAvatarCelebration();
+      } else {
+        if (bassFilter && audioCtx) {
+          bassFilter.gain.setTargetAtTime(0, audioCtx.currentTime, 0.3);
+        }
+        audioPlayerWrap?.classList.remove('extra-bass-active');
+        dancingAvatarWrap?.classList.add('hidden');
+        startAutoSwitchTimer();
+      }
     }, 360);
 
     // 4. Smooth audio crossfade
@@ -375,6 +567,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (audioToggleBtn) {
       audioToggleBtn.classList.add('visible');
     }
+
+    // Schedule 15-second celebratory dance CTA nudge
+    scheduleDanceNudge();
   }
 
   // Audio Toggle Button Event Listener
@@ -457,6 +652,53 @@ document.addEventListener('DOMContentLoaded', () => {
     if (audioPlayerWrap && !audioPlayerWrap.contains(e.target)) {
       audioPlayerWrap.classList.remove('menu-open');
     }
+  });
+
+  // 15-Second Nudge Interactivity: Click to switch track and dance!
+  if (nudgeActionBtn) {
+    nudgeActionBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      cancelDanceNudge();
+      switchTrack(1); // Advance directly to Side B and reveal dancing avatar!
+    });
+  }
+
+  if (danceNudgeBubble) {
+    danceNudgeBubble.addEventListener('click', (e) => {
+      if (e.target.closest('.nudge-close-btn')) return;
+      e.stopPropagation();
+      cancelDanceNudge();
+      switchTrack(1);
+    });
+  }
+
+  if (nudgeCloseBtn) {
+    nudgeCloseBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      cancelDanceNudge();
+    });
+  }
+
+  // Tap Dancing Avatar for Celebratory Pirouette & Gold Hearts
+  if (avatarDancerStage) {
+    avatarDancerStage.addEventListener('click', (e) => {
+      e.stopPropagation();
+      triggerAvatarCelebration();
+    });
+  }
+
+  // Minimize / Hide Dancing Avatar
+  if (avatarCloseBtn) {
+    avatarCloseBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      dancingAvatarWrap?.classList.add('hidden');
+    });
+  }
+
+  // Auto-switch track when current song finishes playing
+  bgAudio.addEventListener('ended', () => {
+    const nextIndex = currentTrackIndex === 0 ? 1 : 0;
+    switchTrack(nextIndex);
   });
 
   /* ==========================================================================

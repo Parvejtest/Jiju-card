@@ -158,6 +158,56 @@
         </div>
       </div>
     </div>
+
+    <!-- 15-Second Celebratory "Change Music & Let's Dance!" Interactive Prompt Nudge -->
+    <div class="dance-nudge-bubble hidden" id="danceNudgeBubble" role="status" aria-live="polite">
+      <div class="nudge-avatar-badge" aria-hidden="true">💃</div>
+      <div class="nudge-content">
+        <span class="nudge-eyebrow">SPECIAL CELEBRATION</span>
+        <span class="nudge-message">Please change music & let's dance! ✨</span>
+      </div>
+      <button type="button" class="nudge-action-btn" id="nudgeActionBtn" title="Switch track & dance now!">
+        <span>Dance Now</span>
+        <svg class="nudge-play-icon" viewBox="0 0 24 24" fill="currentColor">
+          <polygon points="6,4 19,12 6,20"></polygon>
+        </svg>
+      </button>
+      <button type="button" class="nudge-close-btn" id="nudgeCloseBtn" aria-label="Dismiss dance reminder">&times;</button>
+      <div class="nudge-tail-arrow" aria-hidden="true"></div>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- 2B. STYLISH CELEBRATORY DANCING COUPLE AVATAR (SIDE B)    -->
+  <!-- ========================================================= -->
+  <div id="dancingAvatarWrap" class="dancing-avatar-wrap hidden" role="region" aria-label="Celebratory Dancing Couple">
+    <!-- Close / Minimize Avatar Button -->
+    <button id="avatarCloseBtn" class="avatar-close-btn" type="button" aria-label="Minimize dancers" title="Hide dancers">&times;</button>
+
+    <!-- Floating Celebration Sparkles & Musical Notes -->
+    <div class="avatar-sparkles-stage" id="avatarSparklesStage" aria-hidden="true">
+      <span class="sparkle-particle sp1">✦</span>
+      <span class="sparkle-particle sp2">✨</span>
+      <span class="sparkle-particle sp3">♫</span>
+      <span class="sparkle-particle sp4">✦</span>
+    </div>
+
+    <!-- Golden Dance Aura Glow -->
+    <div class="avatar-aura-glow" aria-hidden="true"></div>
+
+    <!-- Interactive Dancing Couple Character with Subwoofer Speaker Bass Action -->
+    <div class="avatar-dancer-stage" id="avatarDancerStage" role="button" tabindex="0" title="Tap for celebration dance!">
+      <!-- Subwoofer Speaker Sound Shockwaves -->
+      <div class="subwoofer-sound-ring ring-1" aria-hidden="true"></div>
+      <div class="subwoofer-sound-ring ring-2" aria-hidden="true"></div>
+      <div class="subwoofer-sound-ring ring-3" aria-hidden="true"></div>
+
+      <img src="/assets/dancing_avatar.gif" alt="Dancing celebration avatar" class="dancing-avatar-img" id="dancingAvatarImg" draggable="false" />
+      
+      <!-- Extra Bass Vibration Rings Under Feet -->
+      <div class="bass-ripple-wave b1" aria-hidden="true"></div>
+      <div class="bass-ripple-wave b2" aria-hidden="true"></div>
+    </div>
   </div>
 
   <!-- ========================================================= -->
