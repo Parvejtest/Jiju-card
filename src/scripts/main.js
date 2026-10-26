@@ -432,6 +432,33 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Close popup menu via close button on mobile
+  const closeTrackMenuBtn = document.getElementById('closeTrackMenuBtn');
+  if (closeTrackMenuBtn) {
+    closeTrackMenuBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      audioPlayerWrap?.classList.remove('menu-open');
+    });
+  }
+
+  // Toggle track menu when tapping Equalizer badge
+  const recordEqBadge = document.getElementById('recordEqBadge');
+  if (recordEqBadge) {
+    recordEqBadge.style.cursor = 'pointer';
+    recordEqBadge.style.pointerEvents = 'auto';
+    recordEqBadge.addEventListener('click', (e) => {
+      e.stopPropagation();
+      audioPlayerWrap?.classList.toggle('menu-open');
+    });
+  }
+
+  // Dismiss track menu on mobile when clicking anywhere outside
+  document.addEventListener('click', (e) => {
+    if (audioPlayerWrap && !audioPlayerWrap.contains(e.target)) {
+      audioPlayerWrap.classList.remove('menu-open');
+    }
+  });
+
   /* ==========================================================================
      2. REAL-TIME WEDDING COUNTDOWN TIMER
      ========================================================================== */

@@ -295,35 +295,7 @@ body {
   transform: translateY(0) scale(1);
 }
 
-@media (max-width: 480px) {
-  .vintage-player-wrap {
-    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
-    right: calc(16px + env(safe-area-inset-right, 0px));
-  }
 
-  .vintage-record-btn {
-    width: 58px;
-    height: 58px;
-  }
-
-  .record-genre-tooltip {
-    right: 0;
-    top: auto;
-    bottom: calc(100% + 14px);
-    transform: translateY(8px);
-    min-width: 200px;
-    max-width: calc(100vw - 32px);
-  }
-
-  .vintage-player-wrap:hover .record-genre-tooltip,
-  .vintage-player-wrap.menu-open .record-genre-tooltip {
-    transform: translateY(0);
-  }
-
-  .song-toast-notification {
-    max-width: calc(100vw - 32px);
-  }
-}
 
 /* Floating Musical Notes Stage */
 .player-notes-stage {
@@ -879,19 +851,26 @@ body {
   position: absolute;
   right: calc(100% + 14px);
   top: 50%;
+  bottom: auto;
+  left: auto;
   transform: translateY(-50%) translateX(8px);
   background: linear-gradient(135deg, rgba(34, 18, 24, 0.97), rgba(58, 20, 28, 0.98));
-  border: 1px solid rgba(212, 175, 55, 0.45);
-  padding: 8px 12px;
+  border: 1px solid rgba(212, 175, 55, 0.5);
+  padding: 9px 13px;
   border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 0 12px rgba(212, 175, 55, 0.2);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.52), 0 0 16px rgba(212, 175, 55, 0.25);
   display: flex;
   flex-direction: column;
-  min-width: 220px;
+  min-width: 230px;
+  width: max-content;
+  max-width: 320px;
+  height: auto;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s cubic-bezier(0.25, 1, 0.5, 1), transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
   z-index: 50;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
 }
 
 .vintage-player-wrap:hover .record-genre-tooltip,
@@ -903,21 +882,29 @@ body {
 
 .tooltip-header {
   display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 7px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.22);
+  width: 100%;
+}
+
+.tooltip-title-wrap {
+  display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin-bottom: 6px;
-  padding-bottom: 5px;
-  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
-  width: 100%;
 }
 
 .tooltip-title {
   font-family: 'Cinzel', serif;
-  font-size: 0.65rem;
-  letter-spacing: 0.16em;
-  color: #e5c158;
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  color: #f7df96;
   font-weight: 700;
   line-height: 1.2;
+  white-space: nowrap;
 }
 
 .tooltip-state {
@@ -926,6 +913,26 @@ body {
   color: #f7ede1;
   opacity: 0.85;
   letter-spacing: 0.03em;
+  margin-top: 1px;
+}
+
+.tooltip-close-btn {
+  background: transparent;
+  border: none;
+  color: #e5c158;
+  font-size: 1.2rem;
+  line-height: 1;
+  padding: 0 4px;
+  cursor: pointer;
+  border-radius: 4px;
+  opacity: 0.8;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  display: none;
+}
+
+.tooltip-close-btn:hover {
+  opacity: 1;
+  transform: scale(1.15);
 }
 
 .track-selector-list {
@@ -991,6 +998,211 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* ==========================================================================
+   VINTAGE AUDIO PLAYER & POPUP MENU RESPONSIVENESS (MOBILE & TOUCH)
+   ========================================================================== */
+@media (max-width: 640px) {
+  .vintage-player-wrap {
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+    right: calc(14px + env(safe-area-inset-right, 0px));
+  }
+
+  .vintage-record-btn {
+    width: 52px;
+    height: 52px;
+    box-shadow: 0 6px 20px rgba(45, 18, 12, 0.48), 0 0 12px rgba(212, 175, 55, 0.25);
+  }
+
+  .record-brass-bezel {
+    inset: -2.5px;
+  }
+
+  .vintage-track-switch-btn {
+    width: 27px;
+    height: 27px;
+    top: -5px;
+    left: -5px;
+  }
+
+  .switch-icon {
+    width: 11px;
+    height: 11px;
+  }
+
+  .track-next-badge {
+    width: 11.5px;
+    height: 11.5px;
+    font-size: 6.5px;
+    bottom: -2px;
+    right: -2px;
+  }
+
+  .turntable-tonearm {
+    width: 19px;
+    height: 35px;
+    top: -12px;
+    right: -3px;
+    transform-origin: 13px 5px;
+  }
+
+  .tonearm-pivot {
+    width: 8px;
+    height: 8px;
+  }
+
+  .tonearm-beam {
+    width: 1.8px;
+    height: 22px;
+  }
+
+  .tonearm-head {
+    width: 5.5px;
+    height: 8.5px;
+  }
+
+  .record-eq-badge {
+    bottom: -3px;
+    left: -3px;
+    height: 12px;
+    padding: 2px 4px;
+    gap: 1.5px;
+  }
+
+  .record-eq-badge .eq-bar {
+    width: 1.8px;
+  }
+
+  .vinyl-center-label {
+    width: 26px;
+    height: 26px;
+  }
+
+  .label-side-pill {
+    font-size: 2.8px;
+    padding: 0.5px 2px;
+  }
+
+  .label-music-icon {
+    width: 8.5px;
+    height: 8.5px;
+  }
+
+  .label-track-title {
+    font-size: 2.6px;
+    max-width: 20px;
+  }
+
+  /* Fixed Popover Above Player on Mobile (NO Negative/Conflicting Heights!) */
+  .record-genre-tooltip {
+    position: absolute;
+    top: auto !important;
+    bottom: calc(100% + 14px) !important;
+    right: 0 !important;
+    left: auto !important;
+    transform: translateY(12px) scale(0.96) !important;
+    width: calc(100vw - 32px);
+    max-width: 275px;
+    min-width: 220px;
+    height: auto !important;
+    min-height: min-content !important;
+    max-height: 80vh !important;
+    padding: 11px 13px;
+    border-radius: 15px;
+    background: linear-gradient(135deg, rgba(30, 11, 16, 0.98), rgba(52, 16, 24, 0.99));
+    border: 1.2px solid rgba(212, 175, 55, 0.65);
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.65), 0 0 20px rgba(212, 175, 55, 0.32);
+    overflow: visible;
+  }
+
+  .vintage-player-wrap:hover .record-genre-tooltip,
+  .vintage-player-wrap.menu-open .record-genre-tooltip {
+    transform: translateY(0) scale(1) !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+
+  .tooltip-close-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .tooltip-title {
+    font-size: 0.66rem;
+    letter-spacing: 0.12em;
+    white-space: nowrap;
+  }
+
+  .tooltip-state {
+    font-size: 0.58rem;
+  }
+
+  .track-selector-list {
+    gap: 6px;
+  }
+
+  .track-select-pill {
+    padding: 6px 9px;
+    border-radius: 10px;
+    gap: 7px;
+  }
+
+  .pill-side {
+    font-size: 0.6rem;
+  }
+
+  .pill-name {
+    font-size: 0.64rem;
+    max-width: 165px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Song Switch Toast Notification at Top Center (Dynamic Island Style) */
+  .song-toast-notification {
+    bottom: auto !important;
+    right: auto !important;
+    top: calc(14px + env(safe-area-inset-top, 0px)) !important;
+    left: 50% !important;
+    transform: translate(-50%, -24px) scale(0.92) !important;
+    width: auto;
+    max-width: min(340px, calc(100vw - 28px));
+    padding: 7px 15px;
+    gap: 8px;
+    border-radius: 20px;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55), 0 0 18px rgba(212, 175, 55, 0.35);
+  }
+
+  .song-toast-notification.active {
+    transform: translate(-50%, 0) scale(1) !important;
+    opacity: 1 !important;
+  }
+
+  .toast-text-group {
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .toast-track-name {
+    font-size: 0.65rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 175px;
+  }
+}
+
+/* Touch devices: avoid sticky hover */
+@media (hover: none) and (pointer: coarse) {
+  .vintage-player-wrap:not(.menu-open):not(:hover) .record-genre-tooltip {
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
 }
 
 /* ==========================================================================
@@ -1287,7 +1499,29 @@ body {
     max-width: 100%;
     margin-left: auto;
     margin-right: auto;
-    padding: clamp(3.4rem, 10vw, 4.6rem) clamp(1rem, 3.8vw, 1.8rem) clamp(2.8rem, 8vw, 3.6rem);
+    padding: clamp(3.2rem, 9.5vw, 4.2rem) clamp(1rem, 3.8vw, 1.8rem) clamp(2.6rem, 7.5vw, 3.4rem);
+  }
+
+  .blessing-script-line.line-1 {
+    font-size: clamp(1.75rem, 7.2vw, 2.2rem);
+  }
+
+  .blessing-script-line.line-2 {
+    font-size: clamp(1.52rem, 6.2vw, 1.95rem);
+  }
+
+  .blessing-script-line.line-3 {
+    font-size: clamp(1.2rem, 4.8vw, 1.55rem);
+    line-height: 1.25;
+  }
+
+  .blessing-salutation {
+    font-size: 1.05rem;
+  }
+
+  .blessing-body {
+    font-size: 0.92rem;
+    line-height: 1.58;
   }
 }
 
@@ -1327,15 +1561,15 @@ body {
 }
 
 .blessing-script-line.line-1 {
-  font-size: clamp(2.1rem, 7.5vw, 3.25rem);
+  font-size: clamp(1.8rem, 6.8vw, 3.25rem);
 }
 
 .blessing-script-line.line-2 {
-  font-size: clamp(1.85rem, 6.8vw, 2.9rem);
+  font-size: clamp(1.55rem, 6vw, 2.9rem);
 }
 
 .blessing-script-line.line-3 {
-  font-size: clamp(1.5rem, 5.2vw, 2.75rem);
+  font-size: clamp(1.22rem, 4.6vw, 2.75rem);
   white-space: normal;
   text-wrap: balance;
   word-break: keep-all;
