@@ -704,7 +704,7 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ==========================================================================
      2. REAL-TIME WEDDING COUNTDOWN TIMER
      ========================================================================== */
-  const targetDateStr = timerGrid?.getAttribute('data-target') || '2026-11-15T11:00:00+05:30';
+  const targetDateStr = timerGrid?.getAttribute('data-target') || '2026-11-17T12:30:00+05:30';
   const targetTime = new Date(targetDateStr).getTime();
 
   function updateCountdown() {
