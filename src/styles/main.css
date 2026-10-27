@@ -2636,11 +2636,13 @@ body {
 }
 
 /* Line caps for all-events view */
+.timeline-part:first-of-type .timeline-row:first-child .marker-col::before,
 #schedulePart1 .timeline-row:first-child .marker-col::before {
   top: 50%;
 }
 
-#schedulePart2 .timeline-row:last-child .marker-col::before {
+.timeline-part:last-of-type .timeline-row:last-child .marker-col::before,
+#schedulePart3 .timeline-row:last-child .marker-col::before {
   bottom: 50%;
 }
 

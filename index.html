@@ -84,16 +84,19 @@
     </div>
 
     <!-- Quick Track Switcher Button (Side A ⇄ Side B) -->
-    <button id="trackSwitchBtn" class="vintage-track-switch-btn" type="button" aria-label="Switch song to next track" title="Switch Song (Side A ⇄ Side B)">
-      <svg class="switch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-        <polygon points="4 4 14 12 4 20 4 4" fill="currentColor"/>
-        <line x1="18" y1="4" x2="18" y2="20"/>
+    <button id="trackSwitchBtn" class="vintage-track-switch-btn" type="button" aria-label="Switch song to next track"
+      title="Switch Song (Side A ⇄ Side B)">
+      <svg class="switch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="4 4 14 12 4 20 4 4" fill="currentColor" />
+        <line x1="18" y1="4" x2="18" y2="20" />
       </svg>
       <span class="track-next-badge" id="trackNextBadge" title="Next: Side B">B</span>
     </button>
 
     <!-- The Round Instrumental Vinyl / Cassette Disc Button -->
-    <button id="audioToggleBtn" class="vintage-record-btn" aria-label="Toggle background instrumental music" title="Tap to play / pause • Click next button to switch songs">
+    <button id="audioToggleBtn" class="vintage-record-btn" aria-label="Toggle background instrumental music"
+      title="Tap to play / pause • Click next button to switch songs">
       <!-- Antique Gold Beaded Outer Rim -->
       <div class="record-brass-bezel"></div>
 
@@ -109,7 +112,7 @@
           <span class="label-side-pill" id="labelSidePill">SIDE A</span>
           <!-- Vintage Musical Note Icon -->
           <svg class="label-music-icon" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+            <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" />
           </svg>
           <span class="label-track-title" id="labelTrackTitle">ROYAL SERENADE</span>
           <div class="label-spindle"></div>
@@ -143,7 +146,8 @@
           <span class="tooltip-title">INSTRUMENTAL COLLECTION</span>
           <span class="tooltip-state" id="tooltipState">Playing Music</span>
         </div>
-        <button id="closeTrackMenuBtn" class="tooltip-close-btn" type="button" aria-label="Close track menu">&times;</button>
+        <button id="closeTrackMenuBtn" class="tooltip-close-btn" type="button"
+          aria-label="Close track menu">&times;</button>
       </div>
       <div class="track-selector-list" role="list">
         <div class="track-select-pill active" data-track="0" id="trackPill0" role="button" tabindex="0">
@@ -172,7 +176,8 @@
           <polygon points="6,4 19,12 6,20"></polygon>
         </svg>
       </button>
-      <button type="button" class="nudge-close-btn" id="nudgeCloseBtn" aria-label="Dismiss dance reminder">&times;</button>
+      <button type="button" class="nudge-close-btn" id="nudgeCloseBtn"
+        aria-label="Dismiss dance reminder">&times;</button>
       <div class="nudge-tail-arrow" aria-hidden="true"></div>
     </div>
   </div>
@@ -182,7 +187,8 @@
   <!-- ========================================================= -->
   <div id="dancingAvatarWrap" class="dancing-avatar-wrap hidden" role="region" aria-label="Celebratory Dancing Couple">
     <!-- Close / Minimize Avatar Button -->
-    <button id="avatarCloseBtn" class="avatar-close-btn" type="button" aria-label="Minimize dancers" title="Hide dancers">&times;</button>
+    <button id="avatarCloseBtn" class="avatar-close-btn" type="button" aria-label="Minimize dancers"
+      title="Hide dancers">&times;</button>
 
     <!-- Floating Celebration Sparkles & Musical Notes -->
     <div class="avatar-sparkles-stage" id="avatarSparklesStage" aria-hidden="true">
@@ -196,14 +202,16 @@
     <div class="avatar-aura-glow" aria-hidden="true"></div>
 
     <!-- Interactive Dancing Couple Character with Subwoofer Speaker Bass Action -->
-    <div class="avatar-dancer-stage" id="avatarDancerStage" role="button" tabindex="0" title="Tap for celebration dance!">
+    <div class="avatar-dancer-stage" id="avatarDancerStage" role="button" tabindex="0"
+      title="Tap for celebration dance!">
       <!-- Subwoofer Speaker Sound Shockwaves -->
       <div class="subwoofer-sound-ring ring-1" aria-hidden="true"></div>
       <div class="subwoofer-sound-ring ring-2" aria-hidden="true"></div>
       <div class="subwoofer-sound-ring ring-3" aria-hidden="true"></div>
 
-      <img src="/assets/dancing_avatar.gif" alt="Dancing celebration avatar" class="dancing-avatar-img" id="dancingAvatarImg" draggable="false" />
-      
+      <img src="/assets/dancing_avatar.gif" alt="Dancing celebration avatar" class="dancing-avatar-img"
+        id="dancingAvatarImg" draggable="false" />
+
       <!-- Extra Bass Vibration Rings Under Feet -->
       <div class="bass-ripple-wave b1" aria-hidden="true"></div>
       <div class="bass-ripple-wave b2" aria-hidden="true"></div>
@@ -242,7 +250,8 @@
             </div>
 
             <!-- Scroll Down Prompt (Interactive click to glide down) -->
-            <div class="hero-scroll-cue" id="heroScrollCue" role="button" tabindex="0" aria-label="Scroll down to view invitation" title="Scroll down">
+            <div class="hero-scroll-cue" id="heroScrollCue" role="button" tabindex="0"
+              aria-label="Scroll down to view invitation" title="Scroll down">
               <span class="scroll-script">Scroll down</span>
               <div class="scroll-v-chevron"></div>
             </div>
@@ -344,17 +353,19 @@
             </svg>
           </div>
 
-          <!-- Date Filter Pills (Two Parts Selector) -->
+          <!-- Date Filter Pills (Selector) -->
           <div class="schedule-filter-tabs" role="tablist" aria-label="Filter events by date">
             <button class="sched-pill active" data-filter="all" type="button" role="tab" aria-selected="true">All
               Events</button>
-            <button class="sched-pill" data-filter="day1" type="button" role="tab" aria-selected="false">14th
+            <button class="sched-pill" data-filter="day1" type="button" role="tab" aria-selected="false">13th
               November</button>
-            <button class="sched-pill" data-filter="day2" type="button" role="tab" aria-selected="false">15th
+            <button class="sched-pill" data-filter="day2" type="button" role="tab" aria-selected="false">14th
+              November</button>
+            <button class="sched-pill" data-filter="day3" type="button" role="tab" aria-selected="false">15th
               November</button>
           </div>
 
-          <!-- Timeline Container in Two Parts with Interactive Traveling Rose -->
+          <!-- Timeline Container with Interactive Traveling Rose -->
           <div class="schedule-timeline" id="scheduleTimeline">
             <!-- Continuous Golden Stem Track & Active Progress Fill -->
             <div class="timeline-stem-track" id="timelineStemTrack" aria-hidden="true">
@@ -363,20 +374,36 @@
             </div>
 
             <!-- Floating / Traveling Flower along the Timeline Track -->
-            <div class="timeline-traveler" id="timelineTraveler" title="Click to bloom" role="button" tabindex="0" aria-label="Wedding Rose Indicator">
+            <div class="timeline-traveler" id="timelineTraveler" title="Click to bloom" role="button" tabindex="0"
+              aria-label="Wedding Rose Indicator">
               <div class="traveler-aura"></div>
               <img src="/assets/rose_corner.png" alt="Traveling Rose" class="traveling-rose-img" draggable="false">
               <span class="traveler-sparkle sp-1" aria-hidden="true">✦</span>
               <span class="traveler-sparkle sp-2" aria-hidden="true">✦</span>
             </div>
 
-            <!-- PART 1: 14TH NOVEMBER -->
-            <div class="timeline-part" id="schedulePart1">
+            <!-- PART 1: 13TH NOVEMBER -->
+            <div class="timeline-part" id="schedulePart1" data-day="day1">
+              <div class="part-divider-badge">
+                <span class="part-date-label">Friday, 13th November</span>
+              </div>
+
+              <div class="timeline-row" data-event-index="0">
+                <div class="time-col">2:00 PM</div>
+                <div class="marker-col"><span class="diamond-marker" aria-hidden="true"></span></div>
+                <div class="event-col">
+                  <div class="event-name">Mehndi Ceremony</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- PART 2: 14TH NOVEMBER -->
+            <div class="timeline-part" id="schedulePart2" data-day="day2">
               <div class="part-divider-badge">
                 <span class="part-date-label">Saturday, 14th November</span>
               </div>
 
-              <div class="timeline-row" data-event-index="0">
+              <div class="timeline-row" data-event-index="1">
                 <div class="time-col">5 PM</div>
                 <div class="marker-col"><span class="diamond-marker" aria-hidden="true"></span></div>
                 <div class="event-col">
@@ -384,7 +411,7 @@
                 </div>
               </div>
 
-              <div class="timeline-row" data-event-index="1">
+              <div class="timeline-row" data-event-index="2">
                 <div class="time-col">7 PM</div>
                 <div class="marker-col"><span class="diamond-marker" aria-hidden="true"></span></div>
                 <div class="event-col">
@@ -393,21 +420,21 @@
               </div>
             </div>
 
-            <!-- PART 2: 15TH NOVEMBER -->
-            <div class="timeline-part" id="schedulePart2">
+            <!-- PART 3: 15TH NOVEMBER -->
+            <div class="timeline-part" id="schedulePart3" data-day="day3">
               <div class="part-divider-badge">
                 <span class="part-date-label">Sunday, 15th November</span>
               </div>
 
-              <div class="timeline-row" data-event-index="2">
-                <div class="time-col">11:00 PM</div>
+              <div class="timeline-row" data-event-index="3">
+                <div class="time-col">11:00 AM</div>
                 <div class="marker-col"><span class="diamond-marker" aria-hidden="true"></span></div>
                 <div class="event-col">
                   <div class="event-name">Dawat-e-Ta'amdari</div>
                 </div>
               </div>
 
-              <div class="timeline-row highlight-row" data-event-index="3">
+              <div class="timeline-row highlight-row" data-event-index="4">
                 <div class="time-col">8 PM</div>
                 <div class="marker-col">
                   <span class="diamond-marker finale-marker" aria-hidden="true"></span>

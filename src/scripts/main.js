@@ -859,8 +859,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const timelineStemProgress = document.getElementById('timelineStemProgress');
   const timelineTraveler = document.getElementById('timelineTraveler');
   const schedPills = document.querySelectorAll('.sched-pill');
-  const part1 = document.getElementById('schedulePart1');
-  const part2 = document.getElementById('schedulePart2');
+  const timelineParts = document.querySelectorAll('.timeline-part');
 
   let rowData = [];
   let trackX = 0;
@@ -1105,7 +1104,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Filter tab clicks
-  if (schedPills.length && part1 && part2) {
+  if (schedPills.length && timelineParts.length) {
     schedPills.forEach((pill) => {
       pill.addEventListener('click', () => {
         schedPills.forEach((p) => {
@@ -1116,24 +1115,22 @@ document.addEventListener('DOMContentLoaded', () => {
         pill.setAttribute('aria-selected', 'true');
 
         const filter = pill.getAttribute('data-filter');
-        if (filter === 'day1') {
-          part1.classList.remove('hidden');
-          part2.classList.add('hidden');
-          part1.classList.add('single-part');
-          part2.classList.remove('single-part');
-          scheduleTimeline?.classList.add('single-view');
-        } else if (filter === 'day2') {
-          part1.classList.add('hidden');
-          part2.classList.remove('hidden');
-          part1.classList.remove('single-part');
-          part2.classList.add('single-part');
-          scheduleTimeline?.classList.add('single-view');
-        } else {
-          part1.classList.remove('hidden');
-          part2.classList.remove('hidden');
-          part1.classList.remove('single-part');
-          part2.classList.remove('single-part');
+        if (filter === 'all') {
+          timelineParts.forEach((part) => {
+            part.classList.remove('hidden', 'single-part');
+          });
           scheduleTimeline?.classList.remove('single-view');
+        } else {
+          timelineParts.forEach((part) => {
+            if (part.getAttribute('data-day') === filter || part.id === filter) {
+              part.classList.remove('hidden');
+              part.classList.add('single-part');
+            } else {
+              part.classList.add('hidden');
+              part.classList.remove('single-part');
+            }
+          });
+          scheduleTimeline?.classList.add('single-view');
         }
 
         // Re-measure after tab transition
